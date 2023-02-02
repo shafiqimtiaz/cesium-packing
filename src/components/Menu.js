@@ -10,24 +10,17 @@ export const Menu = () => {
 
     return (
         <Layout title="Menu" className="container">
-            <p>Please scan or enter Carton / Order number to proceed</p>
+            <p className="lead">Please scan or enter Carton / Order number to proceed</p>
             <form>
-                <div className="row g-3 align-items-center">
-                    <div className="col-auto">
-                        <label for="carton_number" className="form-label">Carton #</label>
-                    </div>
-                    <div className="col-auto">
-                        <input className="form-control" type="text" placeholder="Carton number" id="carton_number" />
-                    </div>
+
+                <div className="input-group w-25">
+                    <span className="input-group-text">Carton #</span>
+                    <input type="text" className="form-control" id="cartonNumber" placeholder="Carton number" />
                 </div>
                 <br />
-                <div className="row g-3 align-items-center">
-                    <div className="col-auto">
-                        <label for="order_number" className="form-label">Order #</label>
-                    </div>
-                    <div className="col-auto">
-                        <input className="form-control" type="text" placeholder="Order number" id="order_number" />
-                    </div>
+                <div className="input-group w-25">
+                    <span className="input-group-text">Order #</span>
+                    <input type="text" className="form-control" id="orderNumber" placeholder="Order number" />
                 </div>
                 <br />
                 <button type="submit" className="btn btn-primary" onClick={navigateToPacking}>Submit</button>

@@ -1,0 +1,101 @@
+[
+	{
+		"orderNumber": 1001,
+		"ticketNumber": 11,
+		"customerName": "Best Buy",
+		"orderLine": 1,
+		"sku": "A123",
+		"pickedQty": 10,
+		"remainingQty": 5,
+		"description": "Red T-shirt",
+		"upc": "123456"
+	},
+	{
+		"orderNumber": 1002,
+		"ticketNumber": 12,
+		"customerName": "Best Buy",
+		"orderLine": 2,
+		"sku": "B456",
+		"pickedQty": 20,
+		"remainingQty": 0,
+		"description": "Black Jeans",
+		"upc": "456789"
+	},
+	{
+		"orderNumber": 1003,
+		"ticketNumber": 13,
+		"customerName": "Best Buy",
+		"orderLine": 3,
+		"sku": "C789",
+		"pickedQty": 15,
+		"remainingQty": 5,
+		"description": "Blue Dress",
+		"upc": "789123"
+	},
+	{
+		"orderNumber": 1004,
+		"ticketNumber": 14,
+		"customerName": "Best Buy",
+		"orderLine": 4,
+		"sku": "D246",
+		"pickedQty": 5,
+		"remainingQty": 0,
+		"description": "Green Hat",
+		"upc": "246135"
+	},
+	{
+		"orderNumber": 1005,
+		"ticketNumber": 15,
+		"customerName": "Best Buy",
+		"orderLine": 5,
+		"sku": "E369",
+		"pickedQty": 10,
+		"remainingQty": 5,
+		"description": "Yellow Socks",
+		"upc": "369258"
+	},
+	{
+		"orderNumber": 1006,
+		"ticketNumber": 16,
+		"customerName": "Best Buy",
+		"orderLine": 6,
+		"sku": "F159",
+		"pickedQty": 5,
+		"remainingQty": 0,
+		"description": "Pink Shoes",
+		"upc": "159874"
+	},
+	{
+		"orderNumber": 1007,
+		"ticketNumber": 17,
+		"customerName": "Best Buy",
+		"orderLine": 7,
+		"sku": "G753",
+		"pickedQty": 10,
+		"remainingQty": 5,
+		"description": "Orange Sunglasses",
+		"upc": "753198"
+	},
+	{
+		"orderNumber": 1008,
+		"ticketNumber": 18,
+		"customerName": "Best Buy",
+		"orderLine": 8,
+		"sku": "H147",
+		"pickedQty": 5,
+		"remainingQty": 0,
+		"description": "Purple Scarf",
+		"upc": "147896"
+	},
+	{
+		"orderNumber": 1009,
+		"ticketNumber": 19,
+		"customerName": "Best Buy",
+		"orderLine": 9,
+		"sku": "I258",
+		"pickedQty": 10,
+		"remainingQty": 5,
+		"description": "Brown Gloves",
+		"upc": "258963"
+	}
+]

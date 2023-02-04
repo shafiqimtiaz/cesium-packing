@@ -7,49 +7,63 @@ import "../styles/table.css"
 export const Packing = () => {
 
     const [selectedOrderLine, setSelectedOrderLine] = useState();
-    const [packData, setPackData] = useState([]);
     const [pickData, setPickData] = useState(JSONpickData);
+    const [packData, setPackData] = useState([]);
 
     const [showModal, setShowModal] = useState(false);
+    const [isOrderLinePacked, setIsOrderLinePacked] = useState(false);
 
     const header = ["Order Line", "SKU", "Picked Qty", "Remaining Qty", "Description", "UPC"];
 
+    // Issue
     const toggleRow = (orderLine) => {
-        if (selectedOrderLine === orderLine) {
-            setSelectedOrderLine(null);
-        } else {
+        if (selectedOrderLine !== orderLine) {
             setSelectedOrderLine(orderLine);
+        } else {
+            setSelectedOrderLine(null);
         }
     }
 
-    const packRow = () => {
-        setPackData(Array.of(pickData[selectedOrderLine], ...packData,));
-        pickData.splice(selectedOrderLine, 1);
-        setSelectedOrderLine(null);
-        setShowModal(false)
-    }
-    const unPackRow = () => {
-        setPickData(Array.of(packData[selectedOrderLine], ...pickData,));
-        packData.splice(selectedOrderLine, 1);
-        console.log(packData);
-        setSelectedOrderLine(null);
-    }
-
-    const Action = () => {
-        const navigate = useNavigate();
-        const navigateToMenu = () => {
-            navigate('/');
-        };
-
-        const showModal = () => {
-            setShowModal(true);
+    // Issue
+    const pack = (row, check) => {
+        if (selectedOrderLine !== null) {
+            let temp = Array.of(...packData, row);
+            setPackData(temp.sort((a, b) => a.orderLine > b.orderLine));
+            pickData.splice(pickData.indexOf(row), 1);
+            setSelectedOrderLine(null);
+            setShowModal(false);
         }
+    }
 
+    const unPack = (row, check) => {
+        if (selectedOrderLine !== null) {
+            let temp = Array.of(...pickData, row);
+            setPickData(temp.sort((a, b) => a.orderLine > b.orderLine));
+            packData.splice(packData.indexOf(row), 1);
+            setSelectedOrderLine(null);
+        }
+    }
+
+
+    const navigate = useNavigate();
+    const navigateToMenu = () => {
+        navigate('/');
+    };
+
+    const showModalPromt = () => {
+        setShowModal(true);
+    };
+
+    const Action = (prop) => {
         return (
-            <div className="container text-center mb-3">
+            <div
+                className="container text-center mb-3"
+            // style={{ position: "fixed", bottom: "0px", right: "0px" }}
+            >
                 <button className="btn btn-primary mr-2" onClick={navigateToMenu}>Back</button>
-                <button className="btn btn-success mx-2" onClick={showModal}>Pack</button>
-                <button className="btn btn-warning mr-2" onClick={unPackRow}>Unpack</button>
+                <button className="btn btn-warning mx-2" onClick={showModalPromt}>Pack</button>
+                <button className="btn btn-danger mr-2" onClick={() => unPack(prop.data)}>Unpack</button>
+                <button className="btn btn-success mx-2" >Submit</button>
             </div>
         );
     }
@@ -70,7 +84,7 @@ export const Packing = () => {
                         <div className="modal-body">
                             <div className="input-group">
                                 <span className="input-group-text">Item Count</span>
-                                <input type="text" className="form-control" id="itemCount" placeholder={prop.data !== undefined ? prop.data.remainingQty : ""} />
+                                <input type="text" className="form-control" id="itemCount" defaultValue={prop.data !== undefined ? prop.data.remainingQty : ""} />
                             </div>
                         </div>
                         <div className="modal-footer">
@@ -82,7 +96,7 @@ export const Packing = () => {
                             >
                                 Close
                             </button>
-                            <button type="button" className="btn btn-primary" onClick={packRow}>
+                            <button type="button" className="btn btn-primary" onClick={() => pack(prop.data)}>
                                 Pack
                             </button>
                         </div>
@@ -104,10 +118,10 @@ export const Packing = () => {
         );
     };
 
-    const TableBody = (data) => {
-        const rows = data.prop.map((row, index) => {
-            // has issues with the selectedOrderLine
+    const TableBody = (prop) => {
+        const rows = prop.data.map((row, index) => {
             return (
+                // Issue
                 <tr key={index} className={row.orderLine === selectedOrderLine ? 'table-active' : ''}
                     onClick={() => toggleRow(row.orderLine)}>
                     <td>{row.orderLine}</td>
@@ -123,8 +137,36 @@ export const Packing = () => {
         return <tbody>{rows}</tbody>;
     };
 
+
+    const Alert = () => {
+        return (
+            <div className="container">
+                <div className="alert alert-info" role="alert">
+                    Tasks
+                </div>
+                <div className="alert alert-success" role="alert">
+                    Pack/Unpack
+                    Show modal prompt with remaining qty
+                </div>
+                <div className="alert alert-warning" role="alert">
+                    Fetch data from API<br />
+                    Populate packing menu with data
+                </div>
+                <div className="alert alert-danger" role="alert">
+                    User should not be able to pack/unpack if the order line is not selected<br />
+                    Packing without modal prompt when ticket number and item sku/upc is entered<br />
+                    Packing with modal prompt using specific item count
+                </div>
+            </div>
+        )
+    };
+
+    const filterdPickData = pickData.filter(data => data.orderLine === selectedOrderLine);
+    const filterdPackData = packData.filter(data => data.orderLine === selectedOrderLine);
+
     return (
         <Layout title="Packing" className="container table-responsive">
+            {showModal ? <Modal data={filterdPickData[0]} /> : null}
             <p className="lead">Please scan or enter Items to proceed</p>
             <div className="row">
                 <div className="col-6">
@@ -155,17 +197,17 @@ export const Packing = () => {
             <h3>PENDING</h3>
             <table className="table table-bordered table-hover border-primary">
                 <TableHeader />
-                <TableBody prop={pickData} />
+                <TableBody data={pickData} />
             </table>
             <br />
             <h3>PACKED</h3>
             <table className="table table-bordered table-hover border-primary">
                 <TableHeader />
-                <TableBody prop={packData} />
+                <TableBody data={packData} />
             </table>
             <br />
-            <Action />
-            <Modal data={pickData[selectedOrderLine - 1]} />
+            <Action data={filterdPickData[0] !== undefined ? filterdPickData[0] : filterdPackData[0]} />
+            <Alert />
         </Layout>
     );
 };

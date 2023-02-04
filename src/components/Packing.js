@@ -11,7 +11,7 @@ export const Packing = () => {
     const [packData, setPackData] = useState([]);
 
     const [showModal, setShowModal] = useState(false);
-    const [isOrderLinePacked, setIsOrderLinePacked] = useState(false);
+    // const [isOrderLinePacked, setIsOrderLinePacked] = useState(false);
 
     const header = ["Order Line", "SKU", "Picked Qty", "Remaining Qty", "Description", "UPC"];
 

@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useNavigate } from 'react-router-dom';
 import Layout from './Layout';
 import JSONpickData from "./data.json";
 import "../styles/table.css"
+import Modal from "./Modal";
+import PackingInfo from "./PackingInfo";
+import { useLocation } from 'react-router-dom';
+
+// TODO: fetch all order either by ticket number or order number
 
 export const Packing = () => {
 
@@ -12,6 +17,18 @@ export const Packing = () => {
 
     const [showModal, setShowModal] = useState(false);
     // const [isOrderLinePacked, setIsOrderLinePacked] = useState(false);
+
+    const location = useLocation();
+    const ticketNumber = location.search.split('ticketNumber=')[1];
+    const orderNumber = location.search.split('orderNumber=')[1];
+
+    // const filteredPickData = useMemo(() => {
+    //     return pickData.filter(item => {
+    //         return item.ticketNumber === ticketNumber || item.orderNumber === orderNumber;
+    //     });
+    // }, [pickData, ticketNumber, orderNumber]);
+
+    // setPickData(filteredPickData);
 
     const header = ["Order Line", "SKU", "Picked Qty", "Remaining Qty", "Description", "UPC"];
 
@@ -50,8 +67,8 @@ export const Packing = () => {
         navigate('/');
     };
 
-    const showModalPromt = () => {
-        setShowModal(true);
+    const showModalPromt = (bool) => {
+        setShowModal(bool);
     };
 
     const Action = (prop) => {
@@ -66,44 +83,6 @@ export const Packing = () => {
                 <button className="btn btn-success mx-2" >Submit</button>
             </div>
         );
-    }
-
-    const Modal = (prop) => {
-        return (
-            <div
-                className={`modal fade ${showModal ? 'show' : ''}`}
-                tabIndex="-1"
-                role="dialog"
-                style={{ display: showModal ? 'block' : 'none' }}
-            >
-                <div className="modal-dialog" role="document">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title">Select number of <b>{prop.data !== undefined ? prop.data.sku : ""}</b> to pack</h5>
-                        </div>
-                        <div className="modal-body">
-                            <div className="input-group">
-                                <span className="input-group-text">Item Count</span>
-                                <input type="text" className="form-control" id="itemCount" defaultValue={prop.data !== undefined ? prop.data.remainingQty : ""} />
-                            </div>
-                        </div>
-                        <div className="modal-footer">
-                            <button
-                                type="button"
-                                className="btn btn-secondary"
-                                data-dismiss="modal"
-                                onClick={() => setShowModal(false)}
-                            >
-                                Close
-                            </button>
-                            <button type="button" className="btn btn-primary" onClick={() => pack(prop.data)}>
-                                Pack
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
     }
 
     const TableHeader = () => {
@@ -161,38 +140,13 @@ export const Packing = () => {
         )
     };
 
-    const filterdPickData = pickData.filter(data => data.orderLine === selectedOrderLine);
-    const filterdPackData = packData.filter(data => data.orderLine === selectedOrderLine);
+    const selectedPickRow = pickData.filter(data => data.orderLine === selectedOrderLine);
+    const selectedPackRow = packData.filter(data => data.orderLine === selectedOrderLine);
 
     return (
         <Layout title="Packing" className="container table-responsive">
-            {showModal ? <Modal data={filterdPickData[0]} /> : null}
-            <p className="lead">Please scan or enter Items to proceed</p>
-            <div className="row">
-                <div className="col-6">
-                    <div className="card">
-                        <div className="card-header">
-                            <b>Order</b> {pickData[0].orderNumber}
-                        </div>
-                        <ul className="list-group list-group-flush">
-                            <li className="list-group-item"><b>Ticket ID:</b> {pickData[0].ticketNumber}</li>
-                            <li className="list-group-item"><b>Customer:</b> XXX</li>
-                            <li className="list-group-item"><b>Instructions:</b> XXX</li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="col-6">
-                    <div className="input-group">
-                        <span className="input-group-text">Ticket #</span>
-                        <input type="text" className="form-control" id="ticketNumber" />
-                    </div>
-                    <br />
-                    <div className="input-group">
-                        <span className="input-group-text">Item #</span>
-                        <input type="text" className="form-control" id="itemNumber" />
-                    </div>
-                </div>
-            </div>
+            {showModal ? <Modal data={selectedPickRow[0]} showModal={showModal} showModalPromt={showModalPromt} pack={pack} /> : null}
+            <PackingInfo data={pickData[0]} />
             <br /><hr />
             <h3>PENDING</h3>
             <table className="table table-bordered table-hover border-primary">
@@ -206,7 +160,7 @@ export const Packing = () => {
                 <TableBody data={packData} />
             </table>
             <br />
-            <Action data={filterdPickData[0] !== undefined ? filterdPickData[0] : filterdPackData[0]} />
+            <Action data={selectedPickRow[0] !== undefined ? selectedPickRow[0] : selectedPackRow[0]} />
             <Alert />
         </Layout>
     );

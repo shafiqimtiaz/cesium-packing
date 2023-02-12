@@ -1,54 +1,62 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import Layout from './Layout';
 import { useNavigate } from 'react-router-dom';
-import JSONpickData from "./data.json";
-
-// convert the alert to a notification banner
+import Utils from '../controllers/Utils';
+import { GlobalContext } from "../context/GlobalState";
 
 export const Menu = () => {
+
+    localStorage.clear();
+
     const navigate = useNavigate();
+    const [showAlert, setShowAlert] = useState(false);
+    const { isTicketNumberValid, isOrderNumberValid, getCustomerName, getOrderNumber, getTicketNumber } = Utils();
 
-    const isTicketNumberValid = (ticketNumber) => {
-        let isValid = false;
-        JSONpickData.forEach(data => {
-            if (data.ticketNumber === parseInt(ticketNumber)) {
-                isValid = true;
-            }
-        });
-        return isValid;
-    };
+    const {
+        setPickOrder,
+        PickData,
+        addToPickData,
+    } = useContext(GlobalContext);
 
-    const isOrderNumberValid = (orderNumber) => {
-        let isValid = false;
-        JSONpickData.forEach(data => {
-            if (data.orderNumber === parseInt(orderNumber)) {
-                isValid = true;
-            }
-        });
-        return isValid;
-    };
+    const { AlertDanger } = Utils();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const ticketNumber = document.getElementById('ticketNumber').value;
-        const orderNumber = document.getElementById('orderNumber').value;
-        if (isTicketNumberValid(ticketNumber) || isOrderNumberValid(orderNumber)) {
-            navigate(`/packing?ticketNumber=${ticketNumber}&orderNumber=${orderNumber}`);
+        let ticketNumber = document.getElementById('ticketNumber').value;
+        let orderNumber = document.getElementById('orderNumber').value;
+        let customerName = getCustomerName(ticketNumber, orderNumber);
+
+        if (!ticketNumber) ticketNumber = getTicketNumber(orderNumber);
+        if (!orderNumber) orderNumber = getOrderNumber(ticketNumber);
+
+        const filteredPickData = PickData.filter(
+            data => data.ticketNumber === parseInt(ticketNumber) 
+        && data.orderNumber === parseInt(orderNumber));
+
+        let isValid = isTicketNumberValid(ticketNumber) && isOrderNumberValid(orderNumber);
+        if (isValid) {
+            setPickOrder(ticketNumber, orderNumber, customerName);
+            addToPickData(filteredPickData);
+            navigate(`/packing`);
         } else {
-            alert(`Ticket number / Order number is not valid`);
+            setShowAlert(true);
+            setTimeout(() => {
+                setShowAlert(false);
+            }, 3000);
         }
     };
 
     return (
         <Layout title="Menu" className="container">
             <p className="lead">Please scan or enter Ticket / Order number to proceed</p>
+            {showAlert ? <AlertDanger>Please enter VALID INFO</AlertDanger> : null}
             <form onSubmit={handleSubmit}>
-                <div className="input-group">
+                <div className="input-group w-50">
                     <span className="input-group-text">Ticket #</span>
                     <input type="text" className="form-control" id="ticketNumber" placeholder="Ticket number" />
                 </div>
                 <br />
-                <div className="input-group">
+                <div className="input-group w-50">
                     <span className="input-group-text">Order #</span>
                     <input type="text" className="form-control" id="orderNumber" placeholder="Order number" />
                 </div>

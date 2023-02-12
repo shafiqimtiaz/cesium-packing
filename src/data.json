@@ -11,8 +11,8 @@
 		"upc": "123456"
 	},
 	{
-		"orderNumber": 1002,
-		"ticketNumber": 12,
+		"orderNumber": 1001,
+		"ticketNumber": 11,
 		"customerName": "Best Buy",
 		"orderLine": 2,
 		"sku": "B456",
@@ -22,8 +22,8 @@
 		"upc": "456789"
 	},
 	{
-		"orderNumber": 1003,
-		"ticketNumber": 13,
+		"orderNumber": 1001,
+		"ticketNumber": 11,
 		"customerName": "Best Buy",
 		"orderLine": 3,
 		"sku": "C789",
@@ -33,8 +33,8 @@
 		"upc": "789123"
 	},
 	{
-		"orderNumber": 1004,
-		"ticketNumber": 14,
+		"orderNumber": 1001,
+		"ticketNumber": 11,
 		"customerName": "Best Buy",
 		"orderLine": 4,
 		"sku": "D246",
@@ -44,8 +44,8 @@
 		"upc": "246135"
 	},
 	{
-		"orderNumber": 1005,
-		"ticketNumber": 15,
+		"orderNumber": 1002,
+		"ticketNumber": 12,
 		"customerName": "Best Buy",
 		"orderLine": 5,
 		"sku": "E369",
@@ -55,8 +55,8 @@
 		"upc": "369258"
 	},
 	{
-		"orderNumber": 1006,
-		"ticketNumber": 16,
+		"orderNumber": 1002,
+		"ticketNumber": 12,
 		"customerName": "Best Buy",
 		"orderLine": 6,
 		"sku": "F159",
@@ -66,8 +66,8 @@
 		"upc": "159874"
 	},
 	{
-		"orderNumber": 1007,
-		"ticketNumber": 17,
+		"orderNumber": 1002,
+		"ticketNumber": 12,
 		"customerName": "Best Buy",
 		"orderLine": 7,
 		"sku": "G753",
@@ -77,8 +77,8 @@
 		"upc": "753198"
 	},
 	{
-		"orderNumber": 1008,
-		"ticketNumber": 18,
+		"orderNumber": 1002,
+		"ticketNumber": 12,
 		"customerName": "Best Buy",
 		"orderLine": 8,
 		"sku": "H147",
@@ -88,8 +88,8 @@
 		"upc": "147896"
 	},
 	{
-		"orderNumber": 1009,
-		"ticketNumber": 19,
+		"orderNumber": 1002,
+		"ticketNumber": 12,
 		"customerName": "Best Buy",
 		"orderLine": 9,
 		"sku": "I258",
